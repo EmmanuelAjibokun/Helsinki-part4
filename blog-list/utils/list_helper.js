@@ -40,9 +40,28 @@ const mostBlogs = (blogs) => {
     return _.maxBy(authorsBlogCount, "blogs");
 }
 
+const mostLikes = (blogs) => {
+    // group blogs by author into an object
+    const grouped = _.groupBy(blogs, 'author');
+
+    // transform groups into { author, blogs } objects
+    const authorsLikesCount = _.map(grouped, (posts, author) => {
+        let totalLikes = 0;
+        for (let i = 0; i < posts.length; i++) {
+            totalLikes += posts[i].likes;
+            
+        }
+        return { author, likes: totalLikes }
+    })
+
+    // find the object with the highest blogs count
+    return _.maxBy(authorsLikesCount, "likes");
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
