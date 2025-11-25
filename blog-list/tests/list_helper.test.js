@@ -136,7 +136,7 @@ describe('Favorite blog', () => {
         }  
     ]
 
-    test('of a bigger list is calculated right', () => {
+    test('Highest likes of a bigger list is calculated right', () => {
         const result = listHelper.favoriteBlog(blogs)
 
         assert.deepStrictEqual(result, {
@@ -146,6 +146,15 @@ describe('Favorite blog', () => {
             url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
             likes: 12,
             __v: 0
+        })
+    })
+
+    test('Author with most blogs', () => {
+        const result = listHelper.mostBlogs(blogs);
+
+        assert.deepStrictEqual(result, {
+            author: 'Robert C. Martin',
+            blogs: 3,
         })
     })
 })
