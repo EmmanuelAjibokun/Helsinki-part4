@@ -4,6 +4,7 @@ const app = require('../index');
 const supertest = require('supertest');
 const listHelper = require('../utils/list_helper');
 const Blog = require('../model/Blog');
+const assert = require('node:assert');
 
 const api = supertest(app);
 
@@ -22,6 +23,12 @@ test.only('Get all blogs', async() => {
         .get('/api/blogs')
         .expect(200)
         .expect('Content-Type', /application\/json/)
+})
+
+test.only('Does id property exist?', async () => {
+    const blogs = await api.get('/api/blogs');
+    const IDs = blogs.body.map(r => r.id);
+    assert.strictEqual(blogs.body.length, IDs.length)
 })
 
 after(async() => {
