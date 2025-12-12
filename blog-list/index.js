@@ -7,6 +7,7 @@ const middleware = require('./utils/middleware');
 
 const app = express()
 
+const db = process.env
 logger.info('connecting to', config.MONGODB_URI)
 mongoose.connect(config.MONGODB_URI)
     .then(() => {
@@ -27,3 +28,5 @@ app.use(middleware.errorHandler)
 app.listen(config.PORT, () => {
   logger.info(`Server running on port ${config.PORT}`)
 })
+
+module.exports = app;

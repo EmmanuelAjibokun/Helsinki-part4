@@ -2,6 +2,7 @@
   "name": "blog-list",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
     "start": "node index.js",
     "dev": "node --watch index.js",
@@ -17,5 +18,8 @@
     "express": "^5.1.0",
     "lodash": "^4.17.21",
     "mongoose": "^8.19.4"
+  },
+  "devDependencies": {
+    "supertest": "^7.1.4"
   }
 }
