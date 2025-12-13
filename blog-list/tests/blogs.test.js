@@ -18,17 +18,47 @@ beforeEach(async() => {
         .insertMany(listHelper.blogs);
 })
 
-test.only('Get all blogs', async() => {
+test('Get all blogs', async() => {
     await api
         .get('/api/blogs')
         .expect(200)
         .expect('Content-Type', /application\/json/)
 })
 
-test.only('Does id property exist?', async () => {
+test('Does id property exist?', async () => {
     const blogs = await api.get('/api/blogs');
     const IDs = blogs.body.map(r => r.id);
     assert.strictEqual(blogs.body.length, IDs.length)
+})
+
+test.only('Make new blog post', async () => {
+    const newBlog = {
+        title: "React patterns",
+        author: "Michael Chan",
+        url: "https://reactpatterns.com/",
+        likes: 7,
+        __v: 0
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+    const blogs = await api.get('/api/blogs');
+
+    const {title, author, url, likes} = blogs.body[blogs.body.length - 1]
+    const newlyAddedBlog = {
+        title,
+        author,
+        url,
+        likes,
+        __v: 0
+    }
+
+    assert.strictEqual(blogs.body.length, listHelper.blogs.length + 1);
+    assert.deepStrictEqual(newBlog, newlyAddedBlog)
 })
 
 after(async() => {
