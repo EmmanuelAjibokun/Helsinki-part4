@@ -61,6 +61,45 @@ test.only('Make new blog post', async () => {
     assert.deepStrictEqual(newBlog, newlyAddedBlog)
 })
 
+test.only('Verification when likes prop is missing', async () => {
+    const newBlog = {
+        title: "React patterns",
+        author: "Michael Chan",
+        url: "https://reactpatterns.com/",
+        __v: 0
+    }
+
+    const response = await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+    
+    assert.strictEqual(response.body.likes, 0)
+})
+
+test.only('Return bad req status code', async () => {
+    const newBlogMissingTitle = {
+        author: "Michael Chan",
+        url: "https://reactpatterns.com/",
+        __v: 0
+    }
+    const newBlogMissingUrl = {
+        title: "React patterns",
+        author: "Michael Chan",
+        __v: 0
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlogMissingTitle)
+        .expect(400)
+    await api
+        .post('/api/blogs')
+        .send(newBlogMissingUrl)
+        .expect(400)
+})
+
 after(async() => {
     await mongoose.connection.close()
 })
