@@ -9,15 +9,32 @@ blogsRouter.get('/', (request, response) => {
   })
 })
 
-blogsRouter.post('/', (request, response) => {
-  const blog = new Blog(request.body)
+blogsRouter.post('/', async (request, response) => {
+  const body = request.body;
+  
+  try {
+    const user = await User.findById(body.userId);
+    if (!user) {
+      return response.status(400).json({ error: 'userId missing or not valid' })
+    }
+    const blog = new Blog({
+      title: body.title,
+      author: body.author,
+      url: body.url,
+      likes: body.likes,
+      user: user._id
+    });
+    
+    const newBlog = await blog.save()
+    user.notes = user.notes.concat(newBlog._id);
+    user.save()
 
-  blog.save().then((result) => {
-    response.status(201).json(result)
-  }).catch(err => {
-    console.error(err)
+    response.status(201).json(newBlog)
+    
+  } catch (error) {
+    console.error(error)
     response.status(400).json({"message": "Failed to add post"})
-  })
+  }
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
