@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const User = require('../models/user')
+const User = require('../model/User')
 
 const blogs = [
     {
@@ -111,7 +111,9 @@ const mostLikes = (blogs) => {
 }
 
 const usersInDb = async() => {
+    console.log("Fetching users from DB");
     const users = await User.find({});
+    
     return users.map(u => u.toJSON())
 }
 

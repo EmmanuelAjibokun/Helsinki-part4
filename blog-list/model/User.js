@@ -1,6 +1,5 @@
 const { transform } = require('lodash');
 const mongoose = require('mongoose');
-const { blogs } = require('../utils/list_helper');
 
 const userSchema = mongoose.Schema({
     username: {

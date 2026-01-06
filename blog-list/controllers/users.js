@@ -16,6 +16,15 @@ router.get('/', async (request, response) => {
 router.post('/', async (request, response) => {
     try {
         const { username, name, password } = request.body;
+
+        // check password and username length
+        if (!password || password.length < 3) {
+            return response.status(400).json({ message: "Password must be at least 3 characters long" });
+        }
+
+        if (!username || username.length < 3) {
+            return response.status(400).json({ message: "Username must be at least 3 characters long" });
+        }
     
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(password, saltRounds);
