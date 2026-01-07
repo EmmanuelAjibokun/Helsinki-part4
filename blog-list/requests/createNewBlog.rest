@@ -3,8 +3,9 @@ Content-Type: application/json
 Authorization: Bearer <token>
 
 {
-    "title": "Exercises 4.1.-4.2.",
-    "author": "Dr. Mel",
+    "title": "Exercises 5.1.-5.2.",
+    "author": "Dr. Mavinson",
     "url": "https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing#project-structure",
-    "likes": "3"
+    "likes": "4",
+    "userId": "695dd8f7a8c32b6b03ed8bd2"
 }

@@ -5,7 +5,7 @@ const { errorHandler } = require('../utils/middleware');
 
 router.get('/', async (request, response) => {
     try {
-        const users = await User.find({});
+        const users = await User.find({}).populate('blogs', { title: 1, author: 1, url: 1, likes: 1});
         response.json(users);
     } catch (error) {
         console.log(error);
