@@ -1,8 +1,17 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const blogsRouter = express.Router();
 const Blog = require('../model/Blog');
 const { errorHandler } = require('../utils/middleware');
 const User = require('../model/User');
+
+const getTokenFrom = request => {
+  const authorization = request.get('authorization');
+  if (authorization && authorization.startsWith('Bearer ')) {
+    return authorization.replace('Bearer ', '');
+  }
+  return null;
+}
 
 blogsRouter.get('/', (request, response) => {
   Blog.find({}).populate('user', {username: 1, name: 1}).then((blogs) => {
@@ -12,12 +21,18 @@ blogsRouter.get('/', (request, response) => {
 
 blogsRouter.post('/', async (request, response) => {
   const body = request.body;
+
+  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET);
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'invalid token' })
+  }
   
   try {
-    const user = await User.findById(body.userId);
+    const user = await User.findById(decodedToken.id);
     if (!user) {
       return response.status(400).json({ error: 'userId missing or not valid' })
     }
+    // check if blog has been created by the same user before
     const blog = new Blog({
       title: body.title,
       author: body.author,

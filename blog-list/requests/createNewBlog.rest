@@ -1,11 +1,11 @@
 POST http://localhost:3003/api/blogs HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer <token>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hbm55IiwiaWQiOiI2OTVkZDhmN2E4YzMyYjZiMDNlZDhiZDIiLCJpYXQiOjE3NjgxODk3MjN9.PEVsDk3DPO7kIwa4F9lTAitWYuBiQ7AJPgnVYdiFFE4
 
 {
-    "title": "Exercises 5.1.-5.2.",
-    "author": "Dr. Mavinson",
-    "url": "https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing#project-structure",
-    "likes": "4",
+    "title": "Exercises 5.6.-5.8.",
+    "author": "Dr. Seyifunmi",
+    "url": "https://academycore.com/en/part4/structure_of_backend_application_introduction_to_testing#project-structure",
+    "likes": "100",
     "userId": "695dd8f7a8c32b6b03ed8bd2"
 }
