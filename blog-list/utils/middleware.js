@@ -25,11 +25,20 @@ const errorHandler = (error, request, response, next) => {
         return response.status(401).json({ error: 'token invalid' })
     }
 
-    next(error)
+    next()
+}
+
+const getTokenFrom = (request, response, next) => {
+  const authorization = request.get('authorization');
+  if (authorization && authorization.startsWith('Bearer ')) {
+    request.token = authorization.replace('Bearer ', '');
+  }
+  next();
 }
 
 module.exports = {
     requestLogger,
     unknownEndpoint,
-    errorHandler
+    errorHandler,
+    getTokenFrom
 }
