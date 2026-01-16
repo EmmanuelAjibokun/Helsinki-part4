@@ -1,9 +1,7 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const blogsRouter = express.Router();
 const Blog = require('../model/Blog');
-const { errorHandler } = require('../utils/middleware');
-const User = require('../model/User');
+const { errorHandler, userExtractor } = require('../utils/middleware');
 
 
 
@@ -13,19 +11,16 @@ blogsRouter.get('/', (request, response) => {
   })
 })
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', userExtractor, async (request, response) => {
   const body = request.body;
+  const user = request.user;
+  console.log(user);
 
-  const decodedToken = jwt.verify(request.token, process.env.SECRET);
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'invalid token' })
+  if (!body.title || !body.url) {
+    return response.status(400).json({ "message": "Title or URL missing" });
   }
   
   try {
-    const user = await User.findById(decodedToken.id);
-    if (!user) {
-      return response.status(400).json({ error: 'userId missing or not valid' })
-    }
     // check if blog has been created by the same user before
     const blog = new Blog({
       title: body.title,
@@ -47,26 +42,20 @@ blogsRouter.post('/', async (request, response) => {
   }
 })
 
-blogsRouter.delete('/:id', async (request, response) => {
+blogsRouter.delete('/:id', userExtractor, async (request, response) => {
   const paramsId = request.params.id;
-  console.log("Deleting blog with id:", paramsId);
+  const user = request.user;
   if(!paramsId){
     return response.status(400).json({ message: "Invalid id" });
   }
 
-  const decodedToken = jwt.verify(request.token, process.env.SECRET);
-  if(!decodedToken.id) {
-    return response.status(401).json({ error: 'Invalid token' });
-  }
-
-  
   try {
     // unauthorized if the blog to be deleted does not belong to the user
     const blogToDelete = await Blog.findById(paramsId);
     if (!blogToDelete) {
       return response.status(404).json({ message: "Blog not found" });
     }
-    if (blogToDelete.user.toString() !== decodedToken.id.toString()) {
+    if (blogToDelete.user.toString() !== user.id.toString()) {
       return response.status(401).json({ error: "Unauthorized to delete this blog" });
     }
     const deletedBlog = await Blog.findByIdAndDelete(paramsId);
@@ -74,6 +63,11 @@ blogsRouter.delete('/:id', async (request, response) => {
     if (!deletedBlog) {
       return response.status(404).json({ message: "Blog not found" });
     }
+
+    user.blogs = user.blogs.filter(
+      (blogId) => blogId.toString() !== paramsId.toString()
+    );
+    await user.save();
 
     return response.status(204).end();
   } catch (error) {

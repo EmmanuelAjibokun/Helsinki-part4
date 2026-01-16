@@ -3,9 +3,9 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hbm55IiwiaWQiOiI2OTVkZDhmN2E4YzMyYjZiMDNlZDhiZDIiLCJpYXQiOjE3Njg1NTE1NzZ9.w5bq27H5d0sfzFVz4w_tIdnRLjEi2z2geiBtMnskJC0
 
 {
-    "title": "Exercises 6.6.-6.8.",
-    "author": "Dr. Emmanuel",
-    "url": "https://letsnotgothere.com/en/part4/structure_of_backend_application_introduction_to_testing#project-structure",
-    "likes": "20",
+    "title": "Exercises 1.6.-3.8.",
+    "author": "Dr. Dotun",
+    "url": "https://lhmmmm.com/en/part4/structure_of_backend_application_introduction_to_testing#project-structure",
+    "likes": "29",
     "userId": "695dd8f7a8c32b6b03ed8bd2"
 }
